@@ -85,3 +85,44 @@ for metric in distance_metrics:
     predicted_labels = np.array([label_mapping[label] for label in cluster_labels])
     accuracy = np.mean(predicted_labels == y_true)
     print(f'Accuracy with {metric.capitalize()} distance: {accuracy:.4f}')
+    
+    
+# PCA Visualization Problem
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+# Load the IRIS dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+target_names = iris.target_names
+
+# PCA transformation
+pca = PCA(n_components=2)
+X_r = pca.fit_transform(X)
+
+# Print explained variance ratio
+print("Explained variance ratio (first two components):", pca.explained_variance_ratio_)
+
+# Plot PCA result
+plt.figure(figsize=(8, 6))
+colors = ["navy", "turquoise", "darkorange"]
+lw = 2
+
+for color, i, target_name in zip(colors, [0, 1, 2], target_names):
+    plt.scatter(
+        X_r[y == i, 0],
+        X_r[y == i, 1],
+        color=color,
+        alpha=0.8,
+        lw=lw,
+        label=target_name
+    )
+plt.legend(loc="best", shadow=False, scatterpoints=1)
+plt.title("PCA of IRIS Dataset")
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.show()
